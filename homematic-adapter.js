@@ -64,8 +64,11 @@ class HomeMaticAdapter extends Adapter {
   constructor(addonManager, manifest) {
     super(addonManager, HomeMaticAdapter.name, manifest.name);
     addonManager.addAdapter(this);
-    const host = manifest.moziot.config.host;
-    const port = manifest.moziot.config.port;
+
+    const {
+      host,
+      port
+    } = manifest.moziot.config;
 
     if (!host) {
       console.warn('Please specify host in the config');
