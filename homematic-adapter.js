@@ -24,7 +24,7 @@ class RadiatorThermostat extends Device {
     this.client = client;
     this.address = address;
 
-    this.addProperty({
+    this.temperatureProperty = new Property(this, description.title, {
       type: 'number',
       '@type': 'TemperatureProperty',
       unit: 'degree celsius',
@@ -32,11 +32,8 @@ class RadiatorThermostat extends Device {
       description: 'The ambient temperature',
       readOnly: true
     });
-  }
 
-  addProperty(description) {
-    const property = new Property(this, description.title, description);
-    this.properties.set(description.title, property);
+    this.properties.set('temperature', this.temperatureProperty);
   }
 
   startPolling(interval) {
@@ -58,9 +55,8 @@ class RadiatorThermostat extends Device {
   }
 
   updateValue(name, value) {
-    const property = this.properties.get(name);
-    property.setCachedValue(value);
-    this.notifyPropertyChanged(property);
+    this.temperatureProperty.setCachedValue(value);
+    this.notifyPropertyChanged(this.temperatureProperty);
   }
 }
 
