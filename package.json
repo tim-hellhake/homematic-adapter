@@ -3,7 +3,7 @@
   "display_name": "HomeMatic",
   "version": "0.1.1",
   "description": "Connect your HomeMatic devices",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc -p ."
@@ -22,8 +22,8 @@
     "LICENSE",
     "SHA256SUMS",
     "manifest.json",
-    "index.js",
-    "homematic-adapter.js"
+    "lib/index.js",
+    "lib/homematic-adapter.js"
   ],
   "moziot": {
     "api": {
