@@ -6,25 +6,21 @@
 
 'use strict';
 
-const xmlrpc = require('xmlrpc');
+import { Adapter, Device, Property } from 'gateway-addon';
 
-const {
-  Adapter,
-  Device,
-  Property
-} = require('gateway-addon');
+import { createClient, Client } from 'xmlrpc';
 
-class RadiatorThermostat extends Device {
-  constructor(adapter, client, address) {
+export class RadiatorThermostat extends Device {
+  private temperatureProperty: Property;
+
+  constructor(adapter: Adapter, private client: Client, private address: string) {
     super(adapter, `${RadiatorThermostat.name}-${address}`);
     this['@context'] = 'https://iot.mozilla.org/schemas/';
     this['@type'] = ['TemperatureSensor'];
     this.name = 'Radiator thermostat';
     this.description = 'HomeMatic radiator thermostat';
-    this.client = client;
-    this.address = address;
 
-    this.temperatureProperty = new Property(this, description.title, {
+    this.temperatureProperty = new Property(this, 'temperature', {
       type: 'number',
       '@type': 'TemperatureProperty',
       unit: 'degree celsius',
@@ -36,9 +32,10 @@ class RadiatorThermostat extends Device {
     this.properties.set('temperature', this.temperatureProperty);
   }
 
-  startPolling(interval) {
+  startPolling(interval: number) {
     this.poll();
-    this.timer = setInterval(() => {
+
+    setInterval(() => {
       this.poll();
     }, interval * 1000);
   }
@@ -47,21 +44,21 @@ class RadiatorThermostat extends Device {
     // eslint-disable-next-line max-len
     this.client.methodCall('getValue', [this.address, 'ACTUAL_TEMPERATURE'], (error, value) => {
       if (!error) {
-        this.updateValue('temperature', value);
+        this.updateValue(value);
       } else {
         console.error(`Could not read temperature for ${this.address}`);
       }
     });
   }
 
-  updateValue(name, value) {
+  private updateValue(value: any) {
     this.temperatureProperty.setCachedValue(value);
     this.notifyPropertyChanged(this.temperatureProperty);
   }
 }
 
-class HomeMaticAdapter extends Adapter {
-  constructor(addonManager, manifest) {
+export class HomeMaticAdapter extends Adapter {
+  constructor(addonManager: any, manifest: any) {
     super(addonManager, HomeMaticAdapter.name, manifest.name);
     addonManager.addAdapter(this);
 
@@ -80,7 +77,7 @@ class HomeMaticAdapter extends Adapter {
       return;
     }
 
-    const client = xmlrpc.createClient({
+    const client = createClient({
       host,
       port
     });
@@ -103,5 +100,3 @@ class HomeMaticAdapter extends Adapter {
     });
   }
 }
-
-module.exports = HomeMaticAdapter;
