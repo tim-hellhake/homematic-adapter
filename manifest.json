@@ -3,7 +3,7 @@
   "id": "homematic-adapter",
   "name": "HomeMatic",
   "short_name": "HomeMatic",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Connect your HomeMatic devices",
   "homepage_url": "https://github.com/tim-hellhake/homematic-adapter#readme",
   "license": "MPL-2.0",
