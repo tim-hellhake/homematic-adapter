@@ -1,0 +1,40 @@
+{
+  "manifest_version": 1,
+  "id": "homematic-adapter",
+  "name": "HomeMatic",
+  "short_name": "HomeMatic",
+  "version": "0.1.0",
+  "description": "Connect your HomeMatic devices",
+  "homepage_url": "https://github.com/tim-hellhake/homematic-adapter#readme",
+  "license": "MPL-2.0",
+  "author": "Tim Hellhake",
+  "gateway_specific_settings": {
+    "webthings": {
+      "exec": "{nodeLoader} {path}",
+      "primary_type": "adapter",
+      "strict_max_version": "*",
+      "strict_min_version": "0.10.0"
+    }
+  },
+  "options": {
+    "default": {
+      "port": 2001
+    },
+    "schema": {
+      "properties": {
+        "host": {
+          "title": "Hostname of the ccu",
+          "type": "string"
+        },
+        "port": {
+          "title": "Port of the ccu",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "host"
+      ],
+      "type": "object"
+    }
+  }
+}
