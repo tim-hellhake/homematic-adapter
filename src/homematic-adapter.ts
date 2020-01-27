@@ -41,7 +41,6 @@ export class RadiatorThermostat extends Device {
   }
 
   poll() {
-    // eslint-disable-next-line max-len
     this.client.methodCall('getValue', [this.address, 'ACTUAL_TEMPERATURE'], (error, value) => {
       if (!error) {
         this.updateValue(value);
@@ -85,10 +84,8 @@ export class HomeMaticAdapter extends Adapter {
     client.methodCall('listDevices', [], (error, devices) => {
       if (!error) {
         for (const device of devices) {
-          // eslint-disable-next-line max-len
           if (device.PARENT_TYPE === 'HM-CC-RT-DN' && device.TYPE === 'CLIMATECONTROL_RT_TRANSCEIVER') {
             console.log(`Detected new radiator thermostat ${device.ADDRESS}`);
-            // eslint-disable-next-line max-len
             const radiatorThermostat = new RadiatorThermostat(this, client, device.ADDRESS);
             this.handleDeviceAdded(radiatorThermostat);
             radiatorThermostat.startPolling(1);
