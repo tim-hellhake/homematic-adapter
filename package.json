@@ -23,7 +23,8 @@
     "SHA256SUMS",
     "manifest.json",
     "lib/index.js",
-    "lib/homematic-adapter.js"
+    "lib/homematic-adapter.js",
+    "lib/radiator-thermostat.js"
   ],
   "moziot": {
     "api": {
