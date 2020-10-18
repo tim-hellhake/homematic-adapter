@@ -8,24 +8,40 @@ import { Adapter, Device, Property } from 'gateway-addon';
 
 import { Client } from 'xmlrpc';
 
-export class RadiatorThermostat extends Device {
-    private temperatureProperty: Property;
+class TemperatureProperty extends Property {
+    constructor(device: Device, name: string, private client: Client, private address: string) {
+        super(device, name, {
+            type: 'number',
+            '@type': 'TemperatureProperty',
+            unit: 'degree celsius',
+            title: 'Temperature',
+            description: 'The temperature',
+            readOnly: true
+        });
+    }
 
-    constructor(adapter: Adapter, private client: Client, private address: string) {
+    public poll() {
+        this.client.methodCall('getValue', [this.address, 'ACTUAL_TEMPERATURE'], (error, value) => {
+            if (!error) {
+                this.setCachedValueAndNotify(value);
+            } else {
+                console.error(`Could not read set temperature for ${this.address}`);
+            }
+        });
+    }
+}
+
+export class RadiatorThermostat extends Device {
+    private temperatureProperty: TemperatureProperty;
+
+    constructor(adapter: Adapter, client: Client, address: string) {
         super(adapter, `${RadiatorThermostat.name}-${address}`);
         this['@context'] = 'https://iot.mozilla.org/schemas/';
         this['@type'] = ['TemperatureSensor'];
         this.name = 'Radiator thermostat';
         this.description = 'HomeMatic radiator thermostat';
 
-        this.temperatureProperty = new Property(this, 'temperature', {
-            type: 'number',
-            '@type': 'TemperatureProperty',
-            unit: 'degree celsius',
-            title: 'temperature',
-            description: 'The ambient temperature',
-            readOnly: true
-        });
+        this.temperatureProperty = new TemperatureProperty(this, 'temperature', client, address);
 
         this.properties.set('temperature', this.temperatureProperty);
     }
@@ -39,17 +55,6 @@ export class RadiatorThermostat extends Device {
     }
 
     poll() {
-        this.client.methodCall('getValue', [this.address, 'ACTUAL_TEMPERATURE'], (error, value) => {
-            if (!error) {
-                this.updateValue(value);
-            } else {
-                console.error(`Could not read temperature for ${this.address}`);
-            }
-        });
-    }
-
-    private updateValue(value: any) {
-        this.temperatureProperty.setCachedValue(value);
-        this.notifyPropertyChanged(this.temperatureProperty);
+        this.temperatureProperty.poll();
     }
 }
