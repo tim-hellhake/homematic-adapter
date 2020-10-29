@@ -14,6 +14,7 @@ class TemperatureProperty extends Property {
             type: 'number',
             '@type': 'TemperatureProperty',
             unit: 'degree celsius',
+            multipleOf: 0.1,
             title: 'Temperature',
             description: 'The temperature',
             readOnly: true
