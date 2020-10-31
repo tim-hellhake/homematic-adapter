@@ -32,8 +32,42 @@ class TemperatureProperty extends Property {
     }
 }
 
+class TargetTemperatureProperty extends Property {
+    constructor(device: Device, name: string, private client: Client, private address: string) {
+        super(device, name, {
+            type: 'number',
+            '@type': 'TargetTemperatureProperty',
+            unit: 'degree celsius',
+            multipleOf: 0.5,
+            title: 'Target temperature',
+            description: 'The target temperature'
+        });
+    }
+
+    public async setValue(value: number) {
+        this.client.methodCall('setValue', [this.address, 'SET_TEMPERATURE', value.toFixed(1)], (error) => {
+            if (!error) {
+                super.setValue(value);
+            } else {
+                console.error(`Could not read set target temperature for ${this.address}`);
+            }
+        });
+    }
+
+    public poll() {
+        this.client.methodCall('getValue', [this.address, 'SET_TEMPERATURE'], (error, value) => {
+            if (!error) {
+                this.setCachedValueAndNotify(value);
+            } else {
+                console.error(`Could not read set target temperature for ${this.address}`);
+            }
+        });
+    }
+}
+
 export class RadiatorThermostat extends Device {
     private temperatureProperty: TemperatureProperty;
+    private targetTemperatureProperty: TargetTemperatureProperty;
 
     constructor(adapter: Adapter, client: Client, address: string) {
         super(adapter, `${RadiatorThermostat.name}-${address}`);
@@ -45,6 +79,10 @@ export class RadiatorThermostat extends Device {
         this.temperatureProperty = new TemperatureProperty(this, 'temperature', client, address);
 
         this.properties.set('temperature', this.temperatureProperty);
+
+        this.targetTemperatureProperty = new TargetTemperatureProperty(this, 'targetTemperature', client, address);
+
+        this.properties.set('targetTemperature', this.targetTemperatureProperty);
     }
 
     startPolling(interval: number) {
@@ -57,5 +95,6 @@ export class RadiatorThermostat extends Device {
 
     poll() {
         this.temperatureProperty.poll();
+        this.targetTemperatureProperty.poll();
     }
 }
