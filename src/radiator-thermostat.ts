@@ -65,9 +65,36 @@ class TargetTemperatureProperty extends Property {
     }
 }
 
+class ValveStateProperty extends Property {
+    constructor(device: Device, name: string, private client: Client, private address: string) {
+        super(device, name, {
+            type: 'integer',
+            '@type': 'LevelProperty',
+            unit: 'percent',
+            minimum: 0,
+            maximum: 100,
+            multipleOf: 1,
+            title: 'Valve state',
+            description: 'The valve state',
+            readOnly: true
+        });
+    }
+
+    public poll() {
+        this.client.methodCall('getValue', [this.address, 'VALVE_STATE'], (error, value) => {
+            if (!error) {
+                this.setCachedValueAndNotify(value);
+            } else {
+                console.error(`Could not read valve state for ${this.address}`);
+            }
+        });
+    }
+}
+
 export class RadiatorThermostat extends Device {
     private temperatureProperty: TemperatureProperty;
     private targetTemperatureProperty: TargetTemperatureProperty;
+    private valveStateProperty: ValveStateProperty;
 
     constructor(adapter: Adapter, client: Client, address: string) {
         super(adapter, `${RadiatorThermostat.name}-${address}`);
@@ -83,6 +110,10 @@ export class RadiatorThermostat extends Device {
         this.targetTemperatureProperty = new TargetTemperatureProperty(this, 'targetTemperature', client, address);
 
         this.properties.set('targetTemperature', this.targetTemperatureProperty);
+
+        this.valveStateProperty = new ValveStateProperty(this, 'valveState', client, address);
+
+        this.properties.set('valveState', this.valveStateProperty);
     }
 
     startPolling(interval: number) {
@@ -96,5 +127,6 @@ export class RadiatorThermostat extends Device {
     poll() {
         this.temperatureProperty.poll();
         this.targetTemperatureProperty.poll();
+        this.valveStateProperty.poll();
     }
 }
