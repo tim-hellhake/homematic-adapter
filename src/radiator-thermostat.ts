@@ -7,63 +7,7 @@
 import { Adapter, Device, Property } from 'gateway-addon';
 
 import { Client } from 'xmlrpc';
-
-class TemperatureProperty extends Property {
-    constructor(device: Device, name: string, private client: Client, private address: string) {
-        super(device, name, {
-            type: 'number',
-            '@type': 'TemperatureProperty',
-            unit: 'degree celsius',
-            multipleOf: 0.1,
-            title: 'Temperature',
-            description: 'The temperature',
-            readOnly: true
-        });
-    }
-
-    public poll() {
-        this.client.methodCall('getValue', [this.address, 'ACTUAL_TEMPERATURE'], (error, value) => {
-            if (!error) {
-                this.setCachedValueAndNotify(value);
-            } else {
-                console.error(`Could not read set temperature for ${this.address}`);
-            }
-        });
-    }
-}
-
-class TargetTemperatureProperty extends Property {
-    constructor(device: Device, name: string, private client: Client, private address: string) {
-        super(device, name, {
-            type: 'number',
-            '@type': 'TargetTemperatureProperty',
-            unit: 'degree celsius',
-            multipleOf: 0.5,
-            title: 'Target temperature',
-            description: 'The target temperature'
-        });
-    }
-
-    public async setValue(value: number) {
-        this.client.methodCall('setValue', [this.address, 'SET_TEMPERATURE', value.toFixed(1)], (error) => {
-            if (!error) {
-                super.setValue(value);
-            } else {
-                console.error(`Could not read set target temperature for ${this.address}`);
-            }
-        });
-    }
-
-    public poll() {
-        this.client.methodCall('getValue', [this.address, 'SET_TEMPERATURE'], (error, value) => {
-            if (!error) {
-                this.setCachedValueAndNotify(value);
-            } else {
-                console.error(`Could not read set target temperature for ${this.address}`);
-            }
-        });
-    }
-}
+import { Thermostat } from './thermostat';
 
 class ValveStateProperty extends Property {
     constructor(device: Device, name: string, private client: Client, private address: string) {
@@ -91,42 +35,21 @@ class ValveStateProperty extends Property {
     }
 }
 
-export class RadiatorThermostat extends Device {
-    private temperatureProperty: TemperatureProperty;
-    private targetTemperatureProperty: TargetTemperatureProperty;
+export class RadiatorThermostat extends Thermostat {
     private valveStateProperty: ValveStateProperty;
 
     constructor(adapter: Adapter, client: Client, address: string) {
-        super(adapter, `${RadiatorThermostat.name}-${address}`);
-        this['@context'] = 'https://iot.mozilla.org/schemas/';
-        this['@type'] = ['TemperatureSensor'];
+        super(adapter, `${RadiatorThermostat.name}-${address}`, client, address);
         this.name = 'Radiator thermostat';
         this.description = 'HomeMatic radiator thermostat';
-
-        this.temperatureProperty = new TemperatureProperty(this, 'temperature', client, address);
-
-        this.properties.set('temperature', this.temperatureProperty);
-
-        this.targetTemperatureProperty = new TargetTemperatureProperty(this, 'targetTemperature', client, address);
-
-        this.properties.set('targetTemperature', this.targetTemperatureProperty);
 
         this.valveStateProperty = new ValveStateProperty(this, 'valveState', client, address);
 
         this.properties.set('valveState', this.valveStateProperty);
     }
 
-    startPolling(interval: number) {
-        this.poll();
-
-        setInterval(() => {
-            this.poll();
-        }, interval * 1000);
-    }
-
     poll() {
-        this.temperatureProperty.poll();
-        this.targetTemperatureProperty.poll();
+        super.poll();
         this.valveStateProperty.poll();
     }
 }

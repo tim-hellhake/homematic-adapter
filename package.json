@@ -24,7 +24,9 @@
     "manifest.json",
     "lib/index.js",
     "lib/homematic-adapter.js",
-    "lib/radiator-thermostat.js"
+    "lib/radiator-thermostat.js",
+    "lib/thermostat.js",
+    "lib/wall-thermostat.js"
   ],
   "dependencies": {
     "xmlrpc": "^1.3.2"

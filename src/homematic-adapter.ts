@@ -9,6 +9,7 @@
 import { Adapter } from 'gateway-addon';
 import { createClient } from 'xmlrpc';
 import { RadiatorThermostat } from './radiator-thermostat';
+import { WallThermostat } from './wall-thermostat';
 
 export class HomeMaticAdapter extends Adapter {
   constructor(addonManager: any, manifest: any) {
@@ -43,6 +44,14 @@ export class HomeMaticAdapter extends Adapter {
             const radiatorThermostat = new RadiatorThermostat(this, client, device.ADDRESS);
             this.handleDeviceAdded(radiatorThermostat);
             radiatorThermostat.startPolling(1);
+            continue;
+          }
+
+          if (device.PARENT_TYPE === 'HM-TC-IT-WM-W-EU' && device.TYPE === 'THERMALCONTROL_TRANSMIT') {
+            console.log(`Detected new wall thermostat ${device.ADDRESS}`);
+            const wallThermostat = new WallThermostat(this, client, device.ADDRESS);
+            this.handleDeviceAdded(wallThermostat);
+            wallThermostat.startPolling(1);
           }
         }
       } else {
