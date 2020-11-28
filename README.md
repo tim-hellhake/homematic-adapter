@@ -13,6 +13,7 @@ Set the ip address or host name of your ccu in the settings and the port if it d
 
 ## Supported devices
 - HM-CC-RT-DN
+- HM-Sec-SCo
 
 ## Teach in device
 - Go to the _Add things_

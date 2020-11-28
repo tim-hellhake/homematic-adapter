@@ -10,6 +10,7 @@ import { Adapter } from 'gateway-addon';
 import { createClient } from 'xmlrpc';
 import { RadiatorThermostat } from './radiator-thermostat';
 import { WallThermostat } from './wall-thermostat';
+import { ShutterContact } from './shutter-contact';
 
 export class HomeMaticAdapter extends Adapter {
   constructor(addonManager: any, manifest: any) {
@@ -39,19 +40,33 @@ export class HomeMaticAdapter extends Adapter {
     client.methodCall('listDevices', [], (error, devices) => {
       if (!error) {
         for (const device of devices) {
-          if (device.PARENT_TYPE === 'HM-CC-RT-DN' && device.TYPE === 'CLIMATECONTROL_RT_TRANSCEIVER') {
-            console.log(`Detected new radiator thermostat ${device.ADDRESS}`);
-            const radiatorThermostat = new RadiatorThermostat(this, client, device.ADDRESS);
-            this.handleDeviceAdded(radiatorThermostat);
-            radiatorThermostat.startPolling(1);
-            continue;
-          }
-
-          if (device.PARENT_TYPE === 'HM-TC-IT-WM-W-EU' && device.TYPE === 'THERMALCONTROL_TRANSMIT') {
-            console.log(`Detected new wall thermostat ${device.ADDRESS}`);
-            const wallThermostat = new WallThermostat(this, client, device.ADDRESS);
-            this.handleDeviceAdded(wallThermostat);
-            wallThermostat.startPolling(1);
+          console.log(`${device.PARENT_TYPE} ${device.TYPE}`)
+          switch (device.PARENT_TYPE) {
+            case 'HM-CC-RT-DN':
+              if (device.TYPE === 'CLIMATECONTROL_RT_TRANSCEIVER') {
+                console.log(`Detected new radiator thermostat ${device.ADDRESS}`);
+                const radiatorThermostat = new RadiatorThermostat(this, client, device.ADDRESS);
+                this.handleDeviceAdded(radiatorThermostat);
+                radiatorThermostat.startPolling(1);
+              }
+              break;
+            case 'HM-TC-IT-WM-W-EU':
+              if (device.TYPE === 'THERMALCONTROL_TRANSMIT') {
+                console.log(`Detected new wall thermostat ${device.ADDRESS}`);
+                const wallThermostat = new WallThermostat(this, client, device.ADDRESS);
+                this.handleDeviceAdded(wallThermostat);
+                wallThermostat.startPolling(1);
+              }
+              break;
+            case 'HM-Sec-SCo':
+              if (device.TYPE === 'SHUTTER_CONTACT') {
+                console.log(`Detected new shutter contact ${device.ADDRESS}`);
+                const windowSensor = new ShutterContact(this, client, device.ADDRESS);
+                this.handleDeviceAdded(windowSensor);
+                windowSensor.startPolling(1);
+                continue;
+              }
+              break;
           }
         }
       } else {
