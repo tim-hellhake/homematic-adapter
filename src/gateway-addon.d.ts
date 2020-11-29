@@ -6,7 +6,7 @@
 
 declare module 'gateway-addon' {
     class Event {
-        constructor(device: any, name: string, data?: any);
+      constructor(device: Record<string, unknown>, name: string, data?: Record<string, unknown>);
     }
 
     interface EventDescription {
@@ -21,41 +21,66 @@ declare module 'gateway-addon' {
 
     class Property {
         public name: string;
+
         protected title: string;
-        constructor(device: Device, name: string, propertyDescr: {});
-        public setCachedValue(value: any): void;
-        public setCachedValueAndNotify(value: any): void;
-        public setValue(value: any): Promise<void>
+
+        constructor(device: Device, name: string, propertyDescr: Record<string, unknown>);
+
+        public setCachedValue(value: unknown): void;
+
+        public setCachedValueAndNotify(value: unknown): void;
+
+        public setValue(value: unknown): Promise<void>
     }
 
     class Device {
         protected '@context': string;
+
         protected '@type': string[];
+
         public id: string;
+
         public name: string;
+
         protected description: string;
 
         constructor(adapter: Adapter, id: string);
 
-        public properties: Map<String, Property>;
-        public notifyPropertyChanged(property: Property): void;
-        public addAction(name: string, metadata: any): void;
+        public properties: Map<string, Property>;
 
-        public events: Map<String, EventDescription>;
+        public notifyPropertyChanged(property: Property): void;
+
+        public addAction(name: string, metadata: Record<string, unknown>): void;
+
+        public events: Map<string, EventDescription>;
+
         public eventNotify(event: Event): void;
     }
 
     class Adapter {
-        constructor(addonManager: any, id: string, packageName: string);
+      constructor(addonManager: AddonManager, id: string, packageName: string);
 
-        public handleDeviceAdded(device: Device): void;
+      public handleDeviceAdded(device: Device): void;
     }
 
     class Database {
-        constructor(packageName: string, path?: string);
+      constructor(packageName: string, path?: string);
 
-        public open(): Promise<void>;
-        public loadConfig(): Promise<any>;
-        public saveConfig(config: any): Promise<void>;
+      public open(): Promise<void>;
+
+      public loadConfig(): Promise<Record<string, unknown>>;
+
+      public saveConfig(config: Record<string, unknown>): Promise<void>;
+    }
+
+    class AddonManager {
+      public addAdapter(adapter: Adapter): void;
+    }
+
+    interface Manifest {
+      name: string,
+      moziot: {
+        config: Record<string, unknown>
+      }
     }
 }

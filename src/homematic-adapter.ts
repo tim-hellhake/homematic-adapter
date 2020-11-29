@@ -6,21 +6,26 @@
 
 'use strict';
 
-import { Adapter } from 'gateway-addon';
-import { createClient } from 'xmlrpc';
-import { RadiatorThermostat } from './radiator-thermostat';
-import { WallThermostat } from './wall-thermostat';
-import { ShutterContact } from './shutter-contact';
+import {Adapter, AddonManager, Manifest} from 'gateway-addon';
+import {createClient} from 'xmlrpc';
+import {RadiatorThermostat} from './radiator-thermostat';
+import {WallThermostat} from './wall-thermostat';
+import {ShutterContact} from './shutter-contact';
+
+interface Config {
+  host: string,
+  port: number
+}
 
 export class HomeMaticAdapter extends Adapter {
-  constructor(addonManager: any, manifest: any) {
+  constructor(addonManager: AddonManager, manifest: Manifest) {
     super(addonManager, HomeMaticAdapter.name, manifest.name);
     addonManager.addAdapter(this);
 
     const {
       host,
-      port
-    } = manifest.moziot.config;
+      port,
+    } = <Config><unknown>manifest.moziot.config;
 
     if (!host) {
       console.warn('Please specify host in the config');
@@ -34,13 +39,13 @@ export class HomeMaticAdapter extends Adapter {
 
     const client = createClient({
       host,
-      port
+      port,
     });
 
     client.methodCall('listDevices', [], (error, devices) => {
       if (!error) {
         for (const device of devices) {
-          console.log(`${device.PARENT_TYPE} ${device.TYPE}`)
+          console.log(`${device.PARENT_TYPE} ${device.TYPE}`);
           switch (device.PARENT_TYPE) {
             case 'HM-CC-RT-DN':
               if (device.TYPE === 'CLIMATECONTROL_RT_TRANSCEIVER') {

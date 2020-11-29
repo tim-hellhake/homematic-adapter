@@ -4,34 +4,34 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.*
  */
 
-import { Adapter, Device } from 'gateway-addon';
+import {Adapter, Device} from 'gateway-addon';
 
-import { Client } from 'xmlrpc';
-import { ShutterStateProperty } from './property/shutter-state-property';
+import {Client} from 'xmlrpc';
+import {ShutterStateProperty} from './property/shutter-state-property';
 
 export class ShutterContact extends Device {
     private shutterStateProperty: ShutterStateProperty;
 
     constructor(adapter: Adapter, client: Client, address: string) {
-        super(adapter, `${ShutterContact.name}-${address}`);
-        this['@context'] = 'https://iot.mozilla.org/schemas/';
-        this['@type'] = ['DoorSensor'];
-        this.name = `Shutter contact (${address})`;
+      super(adapter, `${ShutterContact.name}-${address}`);
+      this['@context'] = 'https://iot.mozilla.org/schemas/';
+      this['@type'] = ['DoorSensor'];
+      this.name = `Shutter contact (${address})`;
 
-        this.shutterStateProperty = new ShutterStateProperty(this, 'state', client, address, 'STATE');
+      this.shutterStateProperty = new ShutterStateProperty(this, 'state', client, address, 'STATE');
 
-        this.properties.set('state', this.shutterStateProperty);
+      this.properties.set('state', this.shutterStateProperty);
     }
 
-    startPolling(interval: number) {
+    startPolling(interval: number): void {
+      this.poll();
+
+      setInterval(() => {
         this.poll();
-
-        setInterval(() => {
-            this.poll();
-        }, interval * 1000);
+      }, interval * 1000);
     }
 
-    poll() {
-        this.shutterStateProperty.poll();
+    poll(): void {
+      this.shutterStateProperty.poll();
     }
 }

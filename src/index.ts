@@ -6,6 +6,9 @@
 
 'use strict';
 
-import { HomeMaticAdapter } from './homematic-adapter';
+import {AddonManager, Manifest} from 'gateway-addon';
+import {HomeMaticAdapter} from './homematic-adapter';
 
-export = (addonManager: any, manifest: any) => new HomeMaticAdapter(addonManager, manifest);
+export default function(addonManager: AddonManager, manifest: Manifest): void {
+  new HomeMaticAdapter(addonManager, manifest);
+}
