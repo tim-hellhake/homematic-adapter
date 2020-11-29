@@ -26,6 +26,7 @@
     "lib/index.js",
     "lib/homematic-adapter.js",
     "lib/radiator-thermostat.js",
+    "lib/shutter-contact.js",
     "lib/thermostat.js",
     "lib/wall-thermostat.js"
   ],
