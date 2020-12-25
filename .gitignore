@@ -4,3 +4,4 @@
 SHA256SUMS
 node_modules
 lib
+src/config.d.ts

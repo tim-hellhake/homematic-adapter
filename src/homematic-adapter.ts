@@ -6,26 +6,22 @@
 
 'use strict';
 
-import {Adapter, AddonManager, Manifest} from 'gateway-addon';
+import {Adapter, AddonManager} from 'gateway-addon';
 import {createClient} from 'xmlrpc';
 import {RadiatorThermostat} from './radiator-thermostat';
 import {WallThermostat} from './wall-thermostat';
 import {ShutterContact} from './shutter-contact';
-
-interface Config {
-  host: string,
-  port: number
-}
+import {Config} from './config';
 
 export class HomeMaticAdapter extends Adapter {
-  constructor(addonManager: AddonManager, manifest: Manifest) {
-    super(addonManager, HomeMaticAdapter.name, manifest.name);
+  constructor(addonManager: AddonManager, id: string, config: Config) {
+    super(addonManager, HomeMaticAdapter.name, id);
     addonManager.addAdapter(this);
 
     const {
       host,
       port,
-    } = <Config><unknown>manifest.moziot.config;
+    } = config;
 
     if (!host) {
       console.warn('Please specify host in the config');

@@ -6,9 +6,15 @@
 
 'use strict';
 
-import {AddonManager, Manifest} from 'gateway-addon';
+import {AddonManager, Database} from 'gateway-addon';
+import {Config} from './config';
 import {HomeMaticAdapter} from './homematic-adapter';
 
-export = function(addonManager: AddonManager, manifest: Manifest): void {
-  new HomeMaticAdapter(addonManager, manifest);
+export = async function(addonManager: AddonManager): Promise<void> {
+  const id = 'homematic-adapter';
+  const db = new Database(id, '');
+  await db.open();
+  const config = <Config><unknown> await db.loadConfig();
+  await db.close();
+  new HomeMaticAdapter(addonManager, id, config);
 }

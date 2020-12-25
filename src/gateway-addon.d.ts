@@ -68,6 +68,8 @@ declare module 'gateway-addon' {
 
       public open(): Promise<void>;
 
+      public close(): void;
+
       public loadConfig(): Promise<Record<string, unknown>>;
 
       public saveConfig(config: Record<string, unknown>): Promise<void>;
@@ -75,12 +77,5 @@ declare module 'gateway-addon' {
 
     class AddonManager {
       public addAdapter(adapter: Adapter): void;
-    }
-
-    interface Manifest {
-      name: string,
-      moziot: {
-        config: Record<string, unknown>
-      }
     }
 }
