@@ -9,6 +9,6 @@
 import {AddonManager, Manifest} from 'gateway-addon';
 import {HomeMaticAdapter} from './homematic-adapter';
 
-export default function(addonManager: AddonManager, manifest: Manifest): void {
+export = function(addonManager: AddonManager, manifest: Manifest): void {
   new HomeMaticAdapter(addonManager, manifest);
 }
