@@ -7,7 +7,7 @@
 import {Device, Property} from 'gateway-addon';
 import {Client} from 'xmlrpc';
 
-export class TargetTemperatureProperty extends Property {
+export class TargetTemperatureProperty extends Property<number> {
   constructor(device: Device, name: string, private client: Client, private address: string, private key: string) {
     super(device, name, {
       type: 'number',
@@ -19,13 +19,16 @@ export class TargetTemperatureProperty extends Property {
     });
   }
 
-  public async setValue(value: number): Promise<void> {
-    this.client.methodCall('setValue', [this.address, this.key, value.toFixed(1)], (error) => {
-      if (!error) {
-        super.setValue(value);
-      } else {
-        console.error(`Could not read target temperature for ${this.address}`);
-      }
+  public async setValue(value: number): Promise<number> {
+    return new Promise<number>((resolve, reject) => {
+      this.client.methodCall('setValue', [this.address, this.key, value.toFixed(1)], (error) => {
+        if (!error) {
+          resolve(super.setValue(value));
+        } else {
+          console.error(`Could not read target temperature for ${this.address}`);
+          reject(error);
+        }
+      });
     });
   }
 

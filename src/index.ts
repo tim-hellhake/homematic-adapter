@@ -6,11 +6,11 @@
 
 'use strict';
 
-import {AddonManager, Database} from 'gateway-addon';
+import {AddonManagerProxy, Database} from 'gateway-addon';
 import {Config} from './config';
 import {HomeMaticAdapter} from './homematic-adapter';
 
-export = async function(addonManager: AddonManager): Promise<void> {
+export = async function(addonManager: AddonManagerProxy): Promise<void> {
   const id = 'homematic-adapter';
   const db = new Database(id, '');
   await db.open();

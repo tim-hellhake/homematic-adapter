@@ -6,7 +6,7 @@
 
 'use strict';
 
-import {Adapter, AddonManager} from 'gateway-addon';
+import {Adapter, AddonManagerProxy} from 'gateway-addon';
 import {createClient} from 'xmlrpc';
 import {RadiatorThermostat} from './radiator-thermostat';
 import {WallThermostat} from './wall-thermostat';
@@ -14,7 +14,7 @@ import {ShutterContact} from './shutter-contact';
 import {Config} from './config';
 
 export class HomeMaticAdapter extends Adapter {
-  constructor(addonManager: AddonManager, id: string, config: Config) {
+  constructor(addonManager: AddonManagerProxy, id: string, config: Config) {
     super(addonManager, HomeMaticAdapter.name, id);
     addonManager.addAdapter(this);
 

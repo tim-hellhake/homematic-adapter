@@ -16,11 +16,11 @@ export class ShutterContact extends Device {
       super(adapter, `${ShutterContact.name}-${address}`);
       this['@context'] = 'https://iot.mozilla.org/schemas/';
       this['@type'] = ['DoorSensor'];
-      this.name = `Shutter contact (${address})`;
+      this.setTitle(`Shutter contact (${address})`);
 
       this.shutterStateProperty = new ShutterStateProperty(this, 'state', client, address, 'STATE');
 
-      this.properties.set('state', this.shutterStateProperty);
+      this.addProperty(this.shutterStateProperty);
     }
 
     startPolling(interval: number): void {

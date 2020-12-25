@@ -14,11 +14,11 @@ export class RadiatorThermostat extends Thermostat {
 
     constructor(adapter: Adapter, client: Client, address: string) {
       super(adapter, `${RadiatorThermostat.name}-${address}`, client, address);
-      this.name = `Radiator thermostat (${address})`;
+      this.setTitle(`Radiator thermostat (${address})`);
 
       this.valveStateProperty = new ValveStateProperty(this, 'valveState', client, address, 'VALVE_STATE');
 
-      this.properties.set('valveState', this.valveStateProperty);
+      this.addProperty(this.valveStateProperty);
     }
 
     poll(): void {

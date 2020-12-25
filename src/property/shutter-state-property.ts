@@ -7,7 +7,7 @@
 import {Device, Property} from 'gateway-addon';
 import {Client} from 'xmlrpc';
 
-export class ShutterStateProperty extends Property {
+export class ShutterStateProperty extends Property<boolean> {
   constructor(device: Device, name: string, private client: Client, private address: string, private key: string) {
     super(device, name, {
       type: 'boolean',

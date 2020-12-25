@@ -7,7 +7,7 @@
 import {Device, Property} from 'gateway-addon';
 import {Client} from 'xmlrpc';
 
-export class ValveStateProperty extends Property {
+export class ValveStateProperty extends Property<number> {
   constructor(device: Device, name: string, private client: Client, private address: string, private key: string) {
     super(device, name, {
       type: 'integer',

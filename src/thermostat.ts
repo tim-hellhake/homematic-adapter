@@ -19,15 +19,13 @@ export class Thermostat extends Device {
       super(adapter, id);
       this['@context'] = 'https://iot.mozilla.org/schemas/';
       this['@type'] = ['TemperatureSensor'];
-      this.name = `Thermostat (${address})`;
+      this.setTitle(`Thermostat (${address})`);
 
       this.temperatureProperty = new TemperatureProperty(this, 'temperature', client, address, 'ACTUAL_TEMPERATURE');
-
-      this.properties.set('temperature', this.temperatureProperty);
+      this.addProperty(this.temperatureProperty);
 
       this.targetTemperatureProperty = new TargetTemperatureProperty(this, 'targetTemperature', client, address, 'SET_TEMPERATURE');
-
-      this.properties.set('targetTemperature', this.targetTemperatureProperty);
+      this.addProperty(this.targetTemperatureProperty);
     }
 
     startPolling(interval: number): void {
