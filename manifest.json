@@ -29,6 +29,14 @@
         "port": {
           "title": "Port of the ccu",
           "type": "integer"
+        },
+        "ipHost": {
+          "title": "Hostname of the homatic ip ccu",
+          "type": "string"
+        },
+        "ipPort": {
+          "title": "Port of the homatic ip ccu",
+          "type": "integer"
         }
       },
       "required": [

@@ -34,7 +34,11 @@
     "lib/classic/radiator-thermostat.js",
     "lib/classic/shutter-contact.js",
     "lib/classic/thermostat.js",
-    "lib/classic/wall-thermostat.js"
+    "lib/classic/wall-thermostat.js",
+    "lib/ip/homematic-ip-adapter.js",
+    "lib/ip/radiator-thermostat.js",
+    "lib/ip/thermostat.js",
+    "lib/ip/wall-thermostat.js"
   ],
   "dependencies": {
     "xmlrpc": "^1.3.2"
