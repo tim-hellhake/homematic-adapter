@@ -7,8 +7,8 @@
 import {Adapter} from 'gateway-addon';
 
 import {Client} from 'xmlrpc';
-import {BatteryProperty} from './property/battery-property';
-import {HumidityProperty} from './property/humidity-property';
+import {BatteryProperty} from '../property/battery-property';
+import {HumidityProperty} from '../property/humidity-property';
 import {Thermostat} from './thermostat';
 
 export class WallThermostat extends Thermostat {

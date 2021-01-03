@@ -7,7 +7,7 @@
 import {Adapter} from 'gateway-addon';
 import {Client} from 'xmlrpc';
 import {Thermostat} from './thermostat';
-import {ValveStateProperty} from './property/valve-state-property';
+import {ValveStateProperty} from '../property/valve-state-property';
 
 export class RadiatorThermostat extends Thermostat {
     private valveStateProperty: ValveStateProperty;

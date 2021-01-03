@@ -7,8 +7,8 @@
 import {Adapter, Device} from 'gateway-addon';
 
 import {Client} from 'xmlrpc';
-import {TemperatureProperty} from './property/temperature-property';
-import {TargetTemperatureProperty} from './property/target-temperature-property';
+import {TemperatureProperty} from '../property/temperature-property';
+import {TargetTemperatureProperty} from '../property/target-temperature-property';
 
 export class Thermostat extends Device {
     private temperatureProperty: TemperatureProperty;

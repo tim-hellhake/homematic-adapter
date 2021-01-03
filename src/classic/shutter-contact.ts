@@ -7,7 +7,7 @@
 import {Adapter, Device} from 'gateway-addon';
 
 import {Client} from 'xmlrpc';
-import {ShutterStateProperty} from './property/shutter-state-property';
+import {ShutterStateProperty} from '../property/shutter-state-property';
 
 export class ShutterContact extends Device {
     private shutterStateProperty: ShutterStateProperty;

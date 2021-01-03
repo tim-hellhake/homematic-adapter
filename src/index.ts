@@ -8,7 +8,7 @@
 
 import {AddonManagerProxy, Database} from 'gateway-addon';
 import {Config} from './config';
-import {HomeMaticAdapter} from './homematic-adapter';
+import {HomeMaticAdapter} from './classic/homematic-adapter';
 
 export = async function(addonManager: AddonManagerProxy): Promise<void> {
   const id = 'homematic-adapter';

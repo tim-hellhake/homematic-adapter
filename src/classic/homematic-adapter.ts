@@ -11,7 +11,7 @@ import {createClient} from 'xmlrpc';
 import {RadiatorThermostat} from './radiator-thermostat';
 import {WallThermostat} from './wall-thermostat';
 import {ShutterContact} from './shutter-contact';
-import {Config} from './config';
+import {Config} from '../config';
 
 export class HomeMaticAdapter extends Adapter {
   constructor(addonManager: AddonManagerProxy, id: string, config: Config) {
