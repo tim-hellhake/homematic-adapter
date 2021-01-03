@@ -8,6 +8,7 @@ import {Device, Property} from 'gateway-addon';
 import {Client} from 'xmlrpc';
 
 export class TargetTemperatureProperty extends Property<number> {
+  // eslint-disable-next-line no-unused-vars
   constructor(device: Device, name: string, private client: Client, private address: string, private key: string) {
     super(device, name, {
       type: 'number',
