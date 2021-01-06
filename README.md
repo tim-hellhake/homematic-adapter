@@ -15,6 +15,8 @@ Set the ip address or host name of your ccu in the settings and the port if it d
 - HM-CC-RT-DN
 - HM-TC-IT-WM-W-EU
 - HM-Sec-SCo
+- HMIP-eTRV
+- HmIP-WTH-2
 
 ## Teach in device
 - Go to the _Add things_
