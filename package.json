@@ -46,14 +46,14 @@
     "xmlrpc": "^1.3.2"
   },
   "devDependencies": {
-    "@types/node": "^14.14.19",
+    "@types/node": "^14.14.22",
     "@types/ws": "^7.4.0",
     "@types/xmlrpc": "^1.3.6",
-    "@typescript-eslint/eslint-plugin": "^4.11.1",
-    "@typescript-eslint/parser": "^4.11.1",
-    "eslint": "^7.17.0",
+    "@typescript-eslint/eslint-plugin": "^4.14.1",
+    "@typescript-eslint/parser": "^4.14.1",
+    "eslint": "^7.18.0",
     "gateway-addon": "^1.0.0",
-    "json-schema-to-typescript": "^10.0.3",
+    "json-schema-to-typescript": "^10.1.3",
     "typescript": "^4.1.3"
   }
 }
