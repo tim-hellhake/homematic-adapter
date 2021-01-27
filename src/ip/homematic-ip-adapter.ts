@@ -9,6 +9,7 @@
 import {Adapter, AddonManagerProxy} from 'gateway-addon';
 import {createClient} from 'xmlrpc';
 import {Config} from '../config';
+import {PresenceSensor} from './presence-sensor';
 import {RadiatorThermostat} from './radiator-thermostat';
 import {WallThermostat} from './wall-thermostat';
 
@@ -53,6 +54,13 @@ export class HomeMaticIPAdapter extends Adapter {
             const wallThermostat = new WallThermostat(this, client, device.ADDRESS);
             this.handleDeviceAdded(wallThermostat);
             wallThermostat.startPolling(1);
+          }
+
+          if (device.PARENT_TYPE === 'HmIP-SPI' && device.TYPE === 'PRESENCEDETECTOR_TRANSCEIVER') {
+            console.log(`Detected new IP presence sensor ${device.ADDRESS}`);
+            const presenceSensor = new PresenceSensor(this, client, device.ADDRESS);
+            this.handleDeviceAdded(presenceSensor);
+            presenceSensor.startPolling(1);
           }
         }
       } else {

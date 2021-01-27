@@ -25,6 +25,7 @@
     "manifest.json",
     "lib/property/battery-property.js",
     "lib/property/humidity-property.js",
+    "lib/property/presence-property.js",
     "lib/property/shutter-state-property.js",
     "lib/property/target-temperature-property.js",
     "lib/property/temperature-property.js",
@@ -36,6 +37,7 @@
     "lib/classic/thermostat.js",
     "lib/classic/wall-thermostat.js",
     "lib/ip/homematic-ip-adapter.js",
+    "lib/ip/presence-sensor.js",
     "lib/ip/radiator-thermostat.js",
     "lib/ip/thermostat.js",
     "lib/ip/wall-thermostat.js"
