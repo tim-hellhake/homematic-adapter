@@ -58,7 +58,14 @@ export class HomeMaticIPAdapter extends Adapter {
 
           if (device.PARENT_TYPE === 'HmIP-SPI' && device.TYPE === 'PRESENCEDETECTOR_TRANSCEIVER') {
             console.log(`Detected new IP presence sensor ${device.ADDRESS}`);
-            const presenceSensor = new PresenceSensor(this, client, device.ADDRESS);
+            const presenceSensor = new PresenceSensor(this, client, device.ADDRESS, 'PRESENCE_DETECTION_STATE');
+            this.handleDeviceAdded(presenceSensor);
+            presenceSensor.startPolling(1);
+          }
+
+          if (device.PARENT_TYPE === 'HmIP-SMI' && device.TYPE === 'MOTIONDETECTOR_TRANSCEIVER') {
+            console.log(`Detected new IP motion sensor ${device.ADDRESS}`);
+            const presenceSensor = new PresenceSensor(this, client, device.ADDRESS, 'MOTION');
             this.handleDeviceAdded(presenceSensor);
             presenceSensor.startPolling(1);
           }

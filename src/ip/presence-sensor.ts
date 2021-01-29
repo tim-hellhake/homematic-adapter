@@ -12,11 +12,11 @@ import {PresenceProperty} from '../property/presence-property';
 export class PresenceSensor extends Device {
     private presenceProperty: PresenceProperty;
 
-    constructor(adapter: Adapter, client: Client, address: string) {
+    constructor(adapter: Adapter, client: Client, address: string, value: string) {
       super(adapter, `${PresenceSensor.name}-${address}`);
       this.setTitle(`Presence sensor (${address})`);
 
-      this.presenceProperty = new PresenceProperty(this, 'presence', client, address, 'PRESENCE_DETECTION_STATE');
+      this.presenceProperty = new PresenceProperty(this, 'presence', client, address, value);
 
       this.addProperty(this.presenceProperty);
     }
