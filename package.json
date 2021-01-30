@@ -1,7 +1,7 @@
 {
   "name": "homematic-adapter",
   "display_name": "HomeMatic",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Connect your HomeMatic devices",
   "main": "lib/index.js",
   "scripts": {
