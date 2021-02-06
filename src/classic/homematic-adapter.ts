@@ -68,6 +68,15 @@ export class HomeMaticAdapter extends Adapter {
                 continue;
               }
               break;
+            case 'HM-Sec-SC-2':
+              if (device.TYPE === 'SHUTTER_CONTACT') {
+                console.log(`Detected new shutter contact ${device.ADDRESS}`);
+                const windowSensor = new ShutterContact(this, client, device.ADDRESS);
+                this.handleDeviceAdded(windowSensor);
+                windowSensor.startPolling(1);
+                continue;
+              }
+              break;
           }
         }
       } else {

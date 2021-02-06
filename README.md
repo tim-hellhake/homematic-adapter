@@ -15,6 +15,7 @@ Set the ip address or host name of your ccu in the settings and the port if it d
 - HM-CC-RT-DN
 - HM-TC-IT-WM-W-EU
 - HM-Sec-SCo
+- HM-Sec-SC-2
 - HMIP-eTRV
 - HmIP-WTH-2
 
