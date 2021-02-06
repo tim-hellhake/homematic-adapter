@@ -8,8 +8,9 @@ import {Device, Property} from 'gateway-addon';
 import {Client} from 'xmlrpc';
 
 export class ValveStateProperty extends Property<number> {
-  // eslint-disable-next-line no-unused-vars
-  constructor(device: Device, name: string, private client: Client, private address: string, private key: string) {
+  constructor(
+    // eslint-disable-next-line no-unused-vars
+    device: Device, name: string, private client: Client, private address: string, private key: string, private multiplier = 1) {
     super(device, name, {
       type: 'integer',
       '@type': 'LevelProperty',
@@ -26,7 +27,7 @@ export class ValveStateProperty extends Property<number> {
   public poll(): void {
     this.client.methodCall('getValue', [this.address, this.key], (error, value) => {
       if (!error) {
-        this.setCachedValueAndNotify(value);
+        this.setCachedValueAndNotify(value * this.multiplier);
       } else {
         console.error(`Could not read valve state for ${this.address}`);
       }
