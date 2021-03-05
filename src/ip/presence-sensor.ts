@@ -14,6 +14,7 @@ export class PresenceSensor extends Device {
 
     constructor(adapter: Adapter, client: Client, address: string, value: string) {
       super(adapter, `${PresenceSensor.name}-${address}`);
+      (this as unknown as {'@type': string[]})['@type'] = ['MotionSensor'];
       this.setTitle(`Presence sensor (${address})`);
 
       this.presenceProperty = new PresenceProperty(this, 'presence', client, address, value);

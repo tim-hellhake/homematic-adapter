@@ -11,6 +11,7 @@ export class PresenceProperty extends Property<boolean> {
   // eslint-disable-next-line no-unused-vars
   constructor(device: Device, name: string, private client: Client, private address: string, private key: string) {
     super(device, name, {
+      '@type': 'MotionProperty',
       type: 'boolean',
       title: 'Presence detected',
       readOnly: true,
